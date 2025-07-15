@@ -4,6 +4,15 @@ import (
 	"fmt"
 )
 
+// Average grade calculation function
+func average_grade(grades []float64) float64 {
+	var total float64
+	for _, grade := range grades {
+		total += grade
+	}
+	return total / float64(len(grades))
+}
+
 func main() {
 	var name string
 	var total_subjects int
@@ -14,21 +23,21 @@ func main() {
 
 	grade := map[string]float64{
 		"A+": 4.00,
-		"A": 4.00,
+		"A":  4.00,
 		"A-": 3.75,
 		"B+": 3.5,
-		"B": 3.0,
+		"B":  3.0,
 		"B-": 2.75,
 		"C+": 2.5,
-		"C": 2.0,
+		"C":  2.0,
 		"C-": 1.75,
-		"D": 1.0,
-		"F": 0.0,
+		"D":  1.0,
+		"F":  0.0,
 	}
 
 	var total_grade []float64
 
-	var average_grade float64
+	var avg_GPA float64
 
 	fmt.Println("Hello, Welcome to Student Grade Calculator!")
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - ")
@@ -37,14 +46,32 @@ func main() {
 
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - ")
 	fmt.Println("How many subjects are you taking?")
-	fmt.Scan(&total_subjects)
+	for {
+		n, err := fmt.Scan(&total_subjects)
+		if n == 1 && err == nil && total_subjects > 0 {
+			break
+		}
+		fmt.Println("Invalid input. Please enter a valid positive number for total subjects:")
+		
+		var discard string
+		fmt.Scanln(&discard)
+	}
 
-	for i:= 1; i <= total_subjects; i++ {
+	for i := 1; i <= total_subjects; i++ {
 		fmt.Println("- - - - - - - - - - - - - - - - - - - - - - ")
 		fmt.Println("Please enter the name of subject", i, ":")
 		fmt.Scan(&subject_name)
-		fmt.Println("Please enter the marks obtained in out of 100%", subject_name, ":")
-		fmt.Scan(&subject_mark)
+		for {
+			fmt.Printf("Please enter the marks obtained in out of 100%% %s :\n", subject_name)
+			n, err := fmt.Scan(&subject_mark)
+			if n == 1 && err == nil && subject_mark >= 0 && subject_mark <= 100 {
+				break
+			}
+			fmt.Println("Invalid input. Please enter a valid number between 0 and 100 for marks:")
+			
+			var discard string
+			fmt.Scanln(&discard)
+		}
 
 		if subject_mark >= 90 {
 			subjects_and_grades[subject_name] = "A+"
@@ -82,11 +109,8 @@ func main() {
 		}
 	}
 
-	for _, num := range total_grade {
-		average_grade += num
-	}
-
-	average_grade /= float64(len(total_grade))
+	// average GPA
+	avg_GPA = average_grade(total_grade)
 
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - ")
 	fmt.Println("Summary for ->", name)
@@ -95,10 +119,8 @@ func main() {
 	for subject, grade := range subjects_and_grades {
 		fmt.Printf("  %s: %s\n", subject, grade)
 	}
-	//can u fix this line
-	fmt.Printf("Average Grade: %.2f GPA\n", average_grade)
 
-
+	fmt.Printf("Average Grade: %.2f GPA\n", avg_GPA)
 
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - ")
 	var continueChoice string
