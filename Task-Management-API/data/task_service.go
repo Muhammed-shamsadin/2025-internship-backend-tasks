@@ -47,3 +47,23 @@ func (ts *TaskService) UpdateTask(id string, updatedTask models.Task) (*models.T
 	}
 	return nil, errors.New("task not found")
 }
+
+func (ts *TaskService) AddTask(task models.Task) (*models.Task, error) {
+	for _, t := range ts.tasks {
+		if t.ID == task.ID {
+			return nil, errors.New("task with this ID already exists")
+		}
+	}
+	ts.tasks = append(ts.tasks, task)
+	return &task, nil
+}
+
+func (ts *TaskService) DeleteTask(id string) error {
+	for i, task := range ts.tasks {
+		if task.ID == id {
+			ts.tasks = append(ts.tasks[:i], ts.tasks[i+1:]...)
+			return nil
+		}
+	}
+	return errors.New("task not found")
+}

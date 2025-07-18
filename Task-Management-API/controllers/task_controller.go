@@ -71,3 +71,37 @@ func (tc *TaskController) UpdateTask(c *gin.Context) {
 
 	c.JSON(http.StatusOK, task)
 }
+
+func (tc *TaskController) AddTask(c *gin.Context) {
+	var newTask models.Task
+
+	if err := c.ShouldBindJSON(&newTask); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid input, please provide a valid task",
+		})
+		return
+	}
+
+	task, err := tc.taskService.AddTask(newTask)
+	if err != nil {
+		c.JSON(http.StatusConflict, gin.H{
+			"error": "Task with this ID already exists",
+		})
+		return
+	}
+
+	c.JSON(http.StatusCreated, task)
+}
+
+func (tc *TaskController) DeleteTask(c *gin.Context) {
+	id := c.Param("id")
+
+	if err := tc.taskService.DeleteTask(id); err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Task not found",
+		})
+		return
+	}
+
+	c.JSON(http.StatusNoContent, nil)
+}
