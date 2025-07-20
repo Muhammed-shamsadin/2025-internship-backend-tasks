@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 // explain why we are using TaskController here ??
 // The TaskController is responsible for handling HTTP requests related to tasks.
 // It acts as an intermediary between the HTTP layer (Gin) and the service layer (TaskService).
@@ -17,7 +16,6 @@ import (
 type TaskController struct {
 	taskService *data.TaskService
 }
-
 
 // explain the need of NewTaskController and what it does ?
 
@@ -41,12 +39,16 @@ func (tc *TaskController) GetTaskByID(c *gin.Context) {
 	task, err := tc.taskService.GetTaskByID(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"error": "Task not found",
+			"message": "Task not found",
+			"error":   err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, task)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Task retrieved successfully",
+		"task":    task,
+	})
 }
 
 func (tc *TaskController) UpdateTask(c *gin.Context) {
@@ -56,7 +58,8 @@ func (tc *TaskController) UpdateTask(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&updatedTask); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid input, please provide a valid task",
+			"message": "Invalid input, please provide a valid task",
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -64,12 +67,16 @@ func (tc *TaskController) UpdateTask(c *gin.Context) {
 	task, err := tc.taskService.UpdateTask(id, updatedTask)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"error": "Task not found",
+			"message": "Failed to update task",
+			"error":   err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, task)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Task updated successfully",
+		"task":    task,
+	})
 }
 
 func (tc *TaskController) AddTask(c *gin.Context) {
@@ -77,7 +84,8 @@ func (tc *TaskController) AddTask(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&newTask); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid input, please provide a valid task",
+			"message": "Invalid input, please provide a valid task",
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -85,12 +93,16 @@ func (tc *TaskController) AddTask(c *gin.Context) {
 	task, err := tc.taskService.AddTask(newTask)
 	if err != nil {
 		c.JSON(http.StatusConflict, gin.H{
-			"error": "Task with this ID already exists",
+			"message": "Failed to add task",
+			"error":   err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusCreated, task)
+	c.JSON(http.StatusCreated, gin.H{
+		"message": "Task added successfully",
+		"task":    task,
+	})
 }
 
 func (tc *TaskController) DeleteTask(c *gin.Context) {
@@ -98,10 +110,11 @@ func (tc *TaskController) DeleteTask(c *gin.Context) {
 
 	if err := tc.taskService.DeleteTask(id); err != nil {
 		c.JSON(http.StatusNotFound, gin.H{
-			"error": "Task not found",
+			"message": "Failed to delete task",
+			"error":   err.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusNoContent, nil)
+	c.JSON(http.StatusOK, gin.H{"message": "Task deleted successfully"})
 }
