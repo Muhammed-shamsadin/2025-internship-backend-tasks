@@ -10,6 +10,7 @@ import (
 )
 
 var TaskCollection *mongo.Collection
+var UserCollection *mongo.Collection
 
 func ConnectMongoDB() error {
 	clientOptions := options.Client().ApplyURI(os.Getenv("MONGO_URI"))
@@ -26,6 +27,7 @@ func ConnectMongoDB() error {
 	}
 
 	TaskCollection = client.Database("taskdb").Collection("tasks")
+	UserCollection = client.Database(("taskdb")).Collection("users")
 	fmt.Println("Connected to MongoDB!")
 	return nil
 }
