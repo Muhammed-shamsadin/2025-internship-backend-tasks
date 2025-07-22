@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"example.com/librarymanagement/controllers"
-	"example.com/librarymanagement/services"
+	"github.com/Muhammed-shamsadin/2025-internship-backend-tasks/Library-Management-System/controllers"
+	"github.com/Muhammed-shamsadin/2025-internship-backend-tasks/Library-Management-System/services"
 )
 
 func main() {

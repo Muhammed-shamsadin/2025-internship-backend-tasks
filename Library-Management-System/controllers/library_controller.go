@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"example.com/librarymanagement/models"
-	"example.com/librarymanagement/services"
+	"github.com/Muhammed-shamsadin/2025-internship-backend-tasks/Library-Management-System/models"
+	"github.com/Muhammed-shamsadin/2025-internship-backend-tasks/Library-Management-System/services"
 )
 
 

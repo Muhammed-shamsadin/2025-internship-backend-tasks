@@ -3,7 +3,7 @@ package services
 import (
 	"fmt"
 
-	"example.com/librarymanagement/models"
+	"github.com/Muhammed-shamsadin/2025-internship-backend-tasks/Library-Management-System/models"
 )
 
 // LibraryManager Interface
