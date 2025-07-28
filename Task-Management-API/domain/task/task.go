@@ -1,4 +1,4 @@
-package models
+package task
 
 import "time"
 
@@ -9,4 +9,3 @@ type Task struct {
 	DueDate     time.Time `json:"due_date" bson:"due_date"`
 	Status      string    `json:"status" bson:"status"`
 }
-
