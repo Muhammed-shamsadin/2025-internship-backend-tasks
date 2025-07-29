@@ -10,10 +10,12 @@ import (
 
 var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 
+var jwtExpiry = 24 * time.Hour
+
 func GenerateJWT(userID string) (string, error) {
 	claims := &jwt.RegisteredClaims{
 		Subject:   userID,
-		ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+		ExpiresAt: jwt.NewNumericDate(time.Now().Add(jwtExpiry)),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(jwtSecret)

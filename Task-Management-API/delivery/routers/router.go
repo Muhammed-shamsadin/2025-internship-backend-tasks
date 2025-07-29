@@ -2,11 +2,12 @@ package routers
 
 import (
 	"2025-internship-backend-tasks/Task-Management-API/delivery/controllers"
+	"2025-internship-backend-tasks/Task-Management-API/infrastructure"
 
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter(taskController *controllers.TaskController, userController *controllers.UserController, authMiddleware gin.HandlerFunc) *gin.Engine {
+func SetupRouter(taskController *controllers.TaskController, userController *controllers.UserController) *gin.Engine {
 	r := gin.Default()
 
 	auth := r.Group("/auth")
@@ -16,9 +17,7 @@ func SetupRouter(taskController *controllers.TaskController, userController *con
 	}
 
 	api := r.Group("/api")
-	if authMiddleware != nil {
-		api.Use(authMiddleware)
-	}
+	api.Use(infrastructure.AuthMiddleware())
 	{
 		api.GET("/tasks", taskController.GetAllTasks)
 		api.GET("/tasks/:id", taskController.GetTaskByID)

@@ -1,18 +1,19 @@
 package controllers
 
 import (
-	"context"
-	"net/http"
 	"2025-internship-backend-tasks/Task-Management-API/domain/task"
 	"2025-internship-backend-tasks/Task-Management-API/usecases"
+	"context"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
 type TaskController struct {
-	usecase *usecases.TaskUsecase
+	usecase usecases.TaskUsecaseInterface
 }
 
-func NewTaskController(usecase *usecases.TaskUsecase) *TaskController {
+func NewTaskController(usecase usecases.TaskUsecaseInterface) *TaskController {
 	return &TaskController{usecase: usecase}
 }
 

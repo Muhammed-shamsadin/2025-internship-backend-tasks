@@ -42,7 +42,7 @@ func main() {
 	userController := controllers.NewUserController(userUsecase)
 
 	// Setup router (add your auth middleware as needed)
-	r := routers.SetupRouter(taskController, userController, nil)
+	r := routers.SetupRouter(taskController, userController)
 
 	// Start server on port 8080
 	log.Println("Server starting on :8080")
